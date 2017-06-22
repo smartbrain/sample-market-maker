@@ -1,5 +1,6 @@
 import sys
 import websocket
+import ssl
 import threading
 import traceback
 from time import sleep
@@ -151,7 +152,7 @@ class BitMEXWebsocket():
                                          on_error=self.__on_error,
                                          header=self.__get_auth())
 
-        self.wst = threading.Thread(target=lambda: self.ws.run_forever())
+        self.wst = threading.Thread(target=lambda: self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE}))
         self.wst.daemon = True
         self.wst.start()
         self.logger.info("Started thread")
